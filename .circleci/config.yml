@@ -156,7 +156,7 @@ jobs:
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
-          name: Add back-end ip to Ansible Inventory
+          name: Add Back-end IP to Ansible Inventory
           command: |
             BACKEND_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:project,Values=udacity-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
