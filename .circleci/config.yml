@@ -195,7 +195,7 @@ jobs:
           command: |
             # Your code here
             cd .circleci/ansible
-            export ANSIBLE_HOST_KEY_CHECKING=False
+            export ANSIBLE_HOST_KEY_CHECKING = False
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
