@@ -194,7 +194,7 @@ jobs:
           name: Configure server
           command: |
             # Your code here
-            cd ~/.circleci/ansible
+            cd .circleci/ansible
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment:
