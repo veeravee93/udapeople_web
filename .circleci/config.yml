@@ -234,7 +234,7 @@ jobs:
             npm install
             npm run build
             npm audit fix --audit-level=critical --force
-            # touch migrations_dump.txt
+            touch migrations_dump.txt
             # npm run migrations:revert 
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
