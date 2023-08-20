@@ -221,21 +221,12 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - attach_workspace:
-          at: ~/
+      - install_awscli
       - run:
           name: Run migrations
           command: |
-            apt-get update
-            apt -y update awscli
             cd backend 
-            npm cache clean --force
-            npm install typescript
             npm install
-            npm run build
-            npm audit fix --audit-level=critical --force
-            touch migrations_dump.txt
-            # npm run migrations:revert 
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
