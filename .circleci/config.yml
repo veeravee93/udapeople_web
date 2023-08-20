@@ -228,9 +228,9 @@ jobs:
           command: |
             # apt-get update
             # apt -y update awscli
-            cd backend 
+            cd ~/project/backend 
             npm cache clean --force
-            # npm install typescript
+            npm install typescript
             npm install
             npm run build
             npm audit fix --audit-level=critical --force
