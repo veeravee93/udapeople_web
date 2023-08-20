@@ -226,9 +226,9 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            # apt-get update
-            # apt -y update awscli
-            cd ~/project/backend 
+            apt-get update
+            apt -y update awscli
+            cd backend 
             npm cache clean --force
             npm install typescript
             npm install
