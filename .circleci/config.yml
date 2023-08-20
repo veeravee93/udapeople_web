@@ -324,36 +324,34 @@ jobs:
       - revert-migrations
   deploy-backend:
     docker:
-      - image: amazon/aws-cli
+      # Docker image here that supports Ansible
+      - image: cimg/base:stable
     steps:
+      # Checkout code from git
       - checkout
-      - run: yum install -y tar gzip 
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints: ["c1:6f:0b:5a:a3:b0:29:db:a4:02:4c:62:39:05:1d:04"]
+      # attach workspace
       - attach_workspace:
-            at: ~/      
+          at: ~/
       - run:
           name: Install dependencies
           command: |
-              curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
-              yum -y install nodejs
-      - run:
-          name: Install awscli and ansible
-          command: |
-              yum install -y awscli
-              amazon-linux-extras install epel -y
-              yum update -y
-              yum install -y ansible
+            apk add --update ansible curl rsync openssh nodejs npm
+            ansible --version
+            pip install awscli
+            aws --version
+      # - run:
+      #     name: compress backend
+      #     command: |
+      #       tar -C ~/project/backend -czvf artifact.tar.gz
       - run:
           name: Deploy backend
           command: |
-              cd backend
-              npm i
-              npm run build
-              cd ..
-              # zip backend
-              tar -C backend -czvf artifact.tar.gz .
-              ls -l artifact.tar.gz
-              pwd
-              ansible-playbook -i inventory.txt deploy-backend.yml
+            cd ~/project/.circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
           # Here's where you will add some code to rollback on failure
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
