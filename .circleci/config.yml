@@ -29,7 +29,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            VALUE=$(curl -k https://kvdb.io/64xvxrRXspfWtdyJZVPqvf/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            VALUE=$(curl -k https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/migration_${CIRCLE_WORKFLOW_ID:0:7})
             echo $VALUE
             if [[ $VALUE -eq 1 ]]
             then
@@ -235,6 +235,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend 
+            npm cache clean --force
             npm install
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
