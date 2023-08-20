@@ -324,41 +324,37 @@ jobs:
       - revert-migrations
   deploy-backend:
     docker:
-      - image: cimg/base:stable
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - install_awscli
-      - install_ansible
-      - install_nodejs
-      - add_ssh_keys:
-          fingerprints: ["c1:6f:0b:5a:a3:b0:29:db:a4:02:4c:62:39:05:1d:04"]
+      - run: yum install -y tar gzip 
       - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys: [backend-deps]
+            at: ~/      
       - run:
           name: Install dependencies
           command: |
-            cd backend
-            npm install
+              curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+              yum -y install nodejs
       - run:
-          name: Package Backend
+          name: Install awscli and ansible
           command: |
-            cd backend
-            npm run build
-            tar -czf artifact.tar.gz dist/* package*
-            cd ..
-            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+              yum install -y awscli
+              amazon-linux-extras install epel -y
+              yum update -y
+              yum install -y ansible
       - run:
           name: Deploy backend
           command: |
-            export TYPEORM_MIGRATIONS_DIR=./migrations
-            export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
-            export TYPEORM_MIGRATIONS=./migrations/*.ts
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
-      # Here's where you will add some code to rollback on failure
+              cd backend
+              npm i
+              npm run build
+              cd ..
+              # zip backend
+              tar -C backend -czvf artifact.tar.gz .
+              ls -l artifact.tar.gz
+              pwd
+              ansible-playbook -i inventory.txt deploy-backend.yml
+          # Here's where you will add some code to rollback on failure
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations
