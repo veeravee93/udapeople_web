@@ -23,19 +23,23 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.id >>
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.id >>
   revert-migrations:
-    description: Revert the last migration if successfully run in the current workflow.
+    description: Revert the last migration
+    parameters:
+      Workflow_ID:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
     steps:
       - run:
           name: Revert migrations
           when: on_fail
           command: |
-            VALUE=$(curl -k https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/migration_${CIRCLE_WORKFLOW_ID:0:7})
-            echo $VALUE
-            if [[ $VALUE -eq 1 ]]
+            SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_ID >>)
+            # Logic for reverting the database state
+            if (( $SUCCESS == 1 ));
             then
               cd ~/project/backend
               npm install
-              npm run migrations:revert
+              npm run migration:revert
             fi
 jobs:
   build-frontend:
@@ -240,22 +244,18 @@ jobs:
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
-          name: Send migration status
+          name: Send migration status to kvdb.io
           command: |
-            cd backend
-            if grep -q "No migrations are pending" migrations_dump.txt
+            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              echo "Migration is successful"
-              curl -k -d '1' https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/migration_${CIRCLE_WORKFLOW_ID:0:7}
-            else
-              echo "Failure"
-              curl -k -d '0' https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/migration_${CIRCLE_WORKFLOW_ID:0:7}
+              curl https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
       #Here's where you will add some code to rollback on failure
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations
   deploy-frontend:
-    docker:
+    docker: 
       # Docker image here that supports AWS CLI
       - image: amazon/aws-cli
     steps:
