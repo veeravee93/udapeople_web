@@ -496,7 +496,7 @@ jobs:
               echo "Nothing to clean up "
             fi
 workflows:
-  Joshvi_Workflow:
+  Joshvi-Workflow:
     jobs:
       - build-frontend
       - build-backend
