@@ -3,6 +3,7 @@ aws cloudformation deploy  --template-file cloudfront.yml --stack-name InitialSt
 ami-03f65b8614a860c29
 
 https://github.com/veeravee93/udapeople_web - URL01
+http://udapeople-5788415.s3-website-us-east-1.amazonaws.com/#/employees - URL02
 
 RDS:
 DBInstance Identifier- Database-1
