@@ -253,6 +253,7 @@ jobs:
       - run:
           name: Send migration results to kvdb.io
           command: |
+            exit 1
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               echo "Database migration was successful"
@@ -415,7 +416,7 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
               # Change this to 0 after the job fails
-              return 1
+              return 0
             else
               return 1
             fi
