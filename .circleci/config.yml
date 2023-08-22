@@ -28,7 +28,7 @@ commands:
           when: on_fail
           command: |
             # Example: kvdb.io
-            export SUCCESS=$(curl --insecure  https://kvdb.io/Mggxw1ssaTdeY5i5THbJDW/migration_<<parameters.workflow_id>>)
+            export SUCCESS=$(curl --insecure  https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/migration_<<parameters.workflow_id>>)
             # Logic for reverting the database state
             echo "success value :  $SUCCESS"
             echo  $SUCCESS
@@ -149,7 +149,7 @@ jobs:
             --stack-name  "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople \
-            --region us-west-2
+            --region us-east-1
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -158,7 +158,7 @@ jobs:
             --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople \
-            --region us-west-2
+            --region us-east-1
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -177,7 +177,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["c1:6f:0b:5a:a3:b0:29:db:a4:02:4c:62:39:05:1d:04"]
+          fingerprints: ["e7:99:04:c7:5d:ed:6f:15:6a:32:63:09:33:d1:f4:f3"]
       - attach_workspace:
           at: ~/
       - run:
@@ -256,10 +256,10 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               echo "Database migration was successful"
-              curl https://kvdb.io/Mggxw1ssaTdeY5i5THbJDW/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             else
                echo "No Pending Database Migrations"
-              curl https://kvdb.io/Mggxw1ssaTdeY5i5THbJDW/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '0'              
+              curl https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '0'              
             fi
       # Here's where you will add some code to rollback on failure
       - revert-migrations:
@@ -335,7 +335,7 @@ jobs:
             pip install awscli --upgrade   
             aws --version
       - add_ssh_keys:
-          fingerprints: ["c1:6f:0b:5a:a3:b0:29:db:a4:02:4c:62:39:05:1d:04"]
+          fingerprints: ["e7:99:04:c7:5d:ed:6f:15:6a:32:63:09:33:d1:f4:f3"]
       - attach_workspace:
           at: ~/
       - run:
@@ -410,7 +410,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-west-2.amazonaws.com/#/employees"            
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
             echo ${URL} 
             if curl -s ${URL} | grep "Welcome"
             then
@@ -450,7 +450,7 @@ jobs:
             --no-paginate --output text)
 
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
-            curl https://kvdb.io/Mggxw1ssaTdeY5i5THbJDW/old_workflow_id_${CIRCLE_WORKFLOW_ID:0:7}  -d "${OLD_WORKFLOW_ID}"
+            curl https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/old_workflow_id_${CIRCLE_WORKFLOW_ID:0:7}  -d "${OLD_WORKFLOW_ID}"
 
       - run:
           name: Update cloudfront distribution
@@ -481,7 +481,7 @@ jobs:
 
             echo Stack names: "${STACKS[@]}"
 
-            export OldWorkflowID=$(curl --insecure https://kvdb.io/Mggxw1ssaTdeY5i5THbJDW/old_workflow_id_${CIRCLE_WORKFLOW_ID:0:7})
+            export OldWorkflowID=$(curl --insecure https://kvdb.io/Dr9QoUQN1ELmKWrQEBYNiN/old_workflow_id_${CIRCLE_WORKFLOW_ID:0:7})
 
             echo Old Workflow ID: $OldWorkflowID 
 
