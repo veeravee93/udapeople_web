@@ -1,0 +1,26 @@
+
+aws cloudformation deploy  --template-file cloudfront.yml --stack-name InitialStack --parameter-overrides WorkflowID=udapeople-397780035219
+ami-03f65b8614a860c29
+
+https://github.com/veeravee93/udapeople_web - URL01
+
+RDS:
+DBInstance Identifier- Database-1
+UN:postgres
+pwd- 123admin
+db name- postgres
+
+5432
+database-1.c8ltkuy5ni6y.us-east-1.rds.amazonaws.com
+
+
+Dr9QoUQN1ELmKWrQEBYNiN  KVDB
+
+
+
+ec2-34-209-71-105.us-west-2.compute.amazonaws.com -prometheus
+ec2-34-219-21-93.us-west-2.compute.amazonaws.com  -node exporter
+
+http://ec2-34-209-71-105.us-west-2.compute.amazonaws.com:9090/targets
+
+sudo vi /etc/systemd/system/prometheus.service
