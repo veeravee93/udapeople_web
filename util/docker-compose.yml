@@ -6,6 +6,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123admin
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=glee
     ports:
       - "5532:5432"
