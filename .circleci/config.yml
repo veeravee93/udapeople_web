@@ -177,7 +177,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["e7:99:04:c7:5d:ed:6f:15:6a:32:63:09:33:d1:f4:f3"]
+          fingerprints: ["a5:6a:04:65:e6:fb:9a:2d:27:3c:05:b8:cc:01:d8:26"]
       - attach_workspace:
           at: ~/
       - run:
@@ -335,7 +335,7 @@ jobs:
             pip install awscli --upgrade   
             aws --version
       - add_ssh_keys:
-          fingerprints: ["e7:99:04:c7:5d:ed:6f:15:6a:32:63:09:33:d1:f4:f3"]
+          fingerprints: ["a5:6a:04:65:e6:fb:9a:2d:27:3c:05:b8:cc:01:d8:26"]
       - attach_workspace:
           at: ~/
       - run:
@@ -420,10 +420,10 @@ jobs:
               return 1
             fi
       # Here's where you will add some code to rollback on failure
-      #- destroy-environment:
-          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-     # - revert-migrations:
-          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   cloudfront-update:
     docker:
@@ -525,3 +525,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
