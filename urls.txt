@@ -1,0 +1,19 @@
+ 1- URL01 
+A public git repository with my project code 
+https://github.com/veeravee93/udapeople_web - URL01
+
+2- URL02
+Evidence of deployed and functioning front-end application in an S3 bucket
+http://udapeople-85418c9.s3-website-us-east-1.amazonaws.com/#/employees -URL02
+
+3- URL03
+Evidence of deployed and functioning front-end application in CloudFront
+https://d1rh4gu98ax8v4.cloudfront.net - URL03
+
+4- URL04
+Evidence of healthy back-end application
+http://54.83.158.217:3030/api/status -URL04
+
+5- URL05
+Evidence of Prometheus Server
+http://ec2-54-226-54-13.compute-1.amazonaws.com:9090 - URL05
