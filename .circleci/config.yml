@@ -272,7 +272,7 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: python:3.11-rc-alpine
+      - image: python:3.7-alpine3.16
     steps:
       # Checkout code from git
       - checkout
@@ -429,7 +429,7 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: cimg/node:13.8.0
+      - image: python:3.7-alpine3.16
     steps:
       - checkout
       - run:
